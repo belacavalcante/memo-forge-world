@@ -3,135 +3,243 @@ import { Button } from "@/components/ui/button";
 import { Logo } from "@/components/Logo";
 import { useAuth } from "@/hooks/useAuth";
 import {
-  Brain, Sparkles, Users, Target, Mic, FileUp, MessageSquare,
-  Trophy, Zap, BookOpen, ArrowRight, Check, Layers, Lock
+  ArrowRight,
+  BookOpen,
+  Brain,
+  Check,
+  Clock3,
+  FileText,
+  Layers,
+  Mic,
+  PenLine,
+  Sparkles,
+  Target,
+  Zap,
 } from "lucide-react";
 
-const features = [
-  { icon: Brain, title: "Memória treinada", desc: "SRS adaptativo que traz de volta o que importa antes de você esquecer." },
-  { icon: Sparkles, title: "IA de performance", desc: "Transforme aulas, vídeos e anotações em planos, flashcards, quizzes e resumos vivos." },
-  { icon: Layers, title: "Mapas mentais", desc: "Visualize ideias, hábitos e matérias em diagramas editáveis para conectar tudo." },
-  { icon: Mic, title: "Domínio por voz", desc: "Explique em voz alta e receba feedback para clareza, precisão e confiança." },
-  { icon: Users, title: "Comunidades Elite", desc: "Compartilhe materiais públicos, receba votos e construa reputação com curadoria." },
-  { icon: Lock, title: "Privacidade total", desc: "Cada pasta, matéria ou conteúdo pode ser privado ou público com um toque." },
+const studyFlow = [
+  { label: "Material bruto", value: "PDF • aula • anotação" },
+  { label: "IA organiza", value: "resumo, mapa e quiz" },
+  { label: "Memória ativa", value: "SRS + revisão guiada" },
 ];
 
-const ritual = ["capturar", "organizar", "testar", "revisar", "evoluir"];
+const features = [
+  {
+    icon: FileText,
+    title: "Transforme qualquer conteúdo",
+    desc: "Suba aulas, PDFs e anotações para gerar resumos, flashcards, quizzes e planos de estudo em minutos.",
+  },
+  {
+    icon: Brain,
+    title: "Revisão espaçada inteligente",
+    desc: "O SRS ajusta a frequência conforme seu esforço e traz de volta o conteúdo antes da curva do esquecimento.",
+  },
+  {
+    icon: Layers,
+    title: "Mapas mentais vivos",
+    desc: "Conecte conceitos difíceis em diagramas visuais editáveis para enxergar a matéria inteira com clareza.",
+  },
+  {
+    icon: Mic,
+    title: "Prova oral com IA",
+    desc: "Explique o tema em voz alta e receba feedback sobre precisão, clareza e domínio real do assunto.",
+  },
+];
+
+const metrics = [
+  { value: "4h", label: "revisão crítica" },
+  { value: "82%", label: "domínio estimado" },
+  { value: "12", label: "cards para hoje" },
+];
 
 const Index = () => {
   const { user, loading } = useAuth();
   if (!loading && user) return <Navigate to="/app" replace />;
 
   return (
-    <div className="min-h-screen gradient-soft overflow-hidden">
-      <header className="container py-5 flex items-center justify-between">
+    <div className="min-h-screen bg-background text-foreground overflow-hidden">
+      <header className="container relative z-10 py-5 flex items-center justify-between">
         <Logo />
-        <div className="flex gap-2">
-          <Button variant="ghost" asChild><Link to="/auth">Entrar</Link></Button>
-          <Button asChild><Link to="/auth">Começar</Link></Button>
+        <div className="flex items-center gap-2">
+          <Button variant="ghost" asChild>
+            <Link to="/auth">Entrar</Link>
+          </Button>
+          <Button asChild className="shadow-glow">
+            <Link to="/auth">Começar</Link>
+          </Button>
         </div>
       </header>
 
-      <section className="container pt-8 pb-16 md:pt-14 md:pb-20">
-        <div className="grid lg:grid-cols-[1.05fr_0.95fr] gap-10 items-center">
-          <div className="text-center lg:text-left">
-        <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-primary-soft text-primary text-sm font-medium mb-6 animate-fade-in">
-          <Sparkles className="h-3.5 w-3.5" />
-          Desenvolvimento pessoal guiado por IA
-        </div>
-        <h1 className="text-6xl md:text-8xl lg:text-9xl font-serif font-medium tracking-normal text-balance mb-6 animate-fade-in leading-[0.86]">
-          Mindy<br />
-          <span className="bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
-            Academy
-          </span>
-        </h1>
-        <p className="text-lg md:text-xl text-muted-foreground max-w-xl mx-auto lg:mx-0 mb-8 text-balance animate-fade-in">
-          Um app para estudar, pensar melhor e evoluir todos os dias. Transforme materiais brutos em rituais de aprendizado ativo com IA, SRS, mapas mentais, voz, comunidade e progresso real.
-        </p>
-        <div className="flex flex-col sm:flex-row gap-3 justify-center lg:justify-start animate-fade-in">
-          <Button size="lg" asChild className="shadow-glow text-base h-12 px-8">
-            <Link to="/auth">Criar meu sistema <ArrowRight className="ml-1 h-4 w-4" /></Link>
-          </Button>
-          <Button size="lg" variant="outline" asChild className="text-base h-12 px-8">
-            <Link to="/auth">Explorar comunidade</Link>
-          </Button>
-        </div>
-        <div className="mt-7 flex flex-wrap items-center justify-center lg:justify-start gap-4 text-sm text-muted-foreground">
-          <span className="flex items-center gap-1.5"><Check className="h-4 w-4 text-success" /> SRS adaptativo</span>
-          <span className="flex items-center gap-1.5"><Check className="h-4 w-4 text-success" /> Tutor IA</span>
-          <span className="flex items-center gap-1.5"><Check className="h-4 w-4 text-success" /> Público ou privado</span>
-        </div>
-          </div>
+      <main>
+        <section className="container relative pt-8 pb-16 md:pt-14 md:pb-24">
+          <div className="absolute inset-x-0 top-0 -z-10 h-[34rem] gradient-soft" />
+          <div className="grid lg:grid-cols-[0.94fr_1.06fr] gap-10 lg:gap-14 items-center">
+            <div className="max-w-2xl text-center lg:text-left">
+              <div className="inline-flex items-center gap-2 rounded-full border bg-card/80 px-3 py-1.5 text-sm font-medium text-primary shadow-soft animate-fade-in">
+                <Sparkles className="h-3.5 w-3.5" />
+                Sistema de estudo para alta performance
+              </div>
 
-          <div className="relative mx-auto w-full max-w-md animate-fade-in">
-            <div className="rounded-[2rem] border bg-card p-4 shadow-soft">
-              <div className="aspect-[4/5] rounded-[1.5rem] bg-secondary p-6 flex flex-col justify-between overflow-hidden">
-                <div className="flex items-center justify-between text-sm text-muted-foreground">
-                  <span>ritual diário</span>
-                  <span>82%</span>
-                </div>
-                <div>
-                  <p className="text-8xl md:text-9xl font-serif leading-none text-primary/25">grow</p>
-                  <div className="grid grid-cols-2 gap-3 -mt-6">
-                    {ritual.map((item, index) => (
-                      <div key={item} className="rounded-xl border bg-card/80 p-3 shadow-soft">
-                        <div className="mb-3 h-1.5 rounded-full bg-primary-soft overflow-hidden">
-                          <div className="h-full bg-primary" style={{ width: `${52 + index * 9}%` }} />
+              <h1 className="mt-7 text-5xl md:text-7xl lg:text-8xl font-serif font-medium leading-[0.9] text-balance animate-fade-in">
+                Estude com método. <span className="text-primary">Lembre com precisão.</span>
+              </h1>
+
+              <p className="mt-7 text-lg md:text-xl leading-relaxed text-muted-foreground text-balance max-w-xl mx-auto lg:mx-0 animate-fade-in">
+                Mindy Academy transforma seus materiais em um fluxo de aprendizado ativo: organizar, entender, testar, revisar e dominar.
+              </p>
+
+              <div className="mt-8 flex flex-col sm:flex-row gap-3 justify-center lg:justify-start animate-fade-in">
+                <Button size="lg" asChild className="h-12 px-8 text-base shadow-glow">
+                  <Link to="/auth">
+                    Criar meu sistema de estudo <ArrowRight className="ml-1 h-4 w-4" />
+                  </Link>
+                </Button>
+                <Button size="lg" variant="outline" asChild className="h-12 px-8 text-base">
+                  <Link to="/auth">Ver rotina de revisão</Link>
+                </Button>
+              </div>
+
+              <div className="mt-8 grid grid-cols-3 gap-3 max-w-xl mx-auto lg:mx-0 animate-fade-in">
+                {metrics.map((item) => (
+                  <div key={item.label} className="border bg-card/75 p-4 shadow-soft rounded-2xl">
+                    <p className="text-2xl font-serif text-primary leading-none">{item.value}</p>
+                    <p className="mt-2 text-xs text-muted-foreground leading-snug">{item.label}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            <div className="relative mx-auto w-full max-w-xl animate-fade-in">
+              <div className="rounded-[2rem] border bg-card p-3 shadow-soft">
+                <div className="rounded-[1.5rem] bg-secondary/70 p-4 md:p-6 overflow-hidden">
+                  <div className="flex items-center justify-between gap-4 border-b pb-4">
+                    <div>
+                      <p className="text-sm text-muted-foreground">Sessão de foco</p>
+                      <h2 className="text-2xl font-serif font-medium">Neurociência da memória</h2>
+                    </div>
+                    <div className="grid h-12 w-12 place-items-center rounded-2xl bg-primary text-primary-foreground shadow-glow">
+                      <BookOpen className="h-5 w-5" />
+                    </div>
+                  </div>
+
+                  <div className="mt-6 grid gap-3">
+                    {studyFlow.map((step, index) => (
+                      <div key={step.label} className="group rounded-2xl border bg-card p-4 shadow-soft transition-smooth hover:shadow-glow">
+                        <div className="flex items-center justify-between gap-3">
+                          <div className="flex items-center gap-3">
+                            <div className="grid h-9 w-9 shrink-0 place-items-center rounded-xl bg-primary-soft text-primary font-semibold">
+                              {index + 1}
+                            </div>
+                            <div>
+                              <p className="font-medium">{step.label}</p>
+                              <p className="text-sm text-muted-foreground">{step.value}</p>
+                            </div>
+                          </div>
+                          <Check className="h-4 w-4 text-success" />
                         </div>
-                        <p className="font-medium capitalize">{item}</p>
-                        <p className="text-xs text-muted-foreground mt-1">Mindy AI</p>
                       </div>
                     ))}
                   </div>
-                </div>
-                <div className="rounded-2xl bg-background/80 border p-4">
-                  <p className="text-sm text-muted-foreground mb-2">Próxima revisão</p>
-                  <div className="flex items-center justify-between gap-4">
-                    <p className="font-semibold">Hábitos, foco e repertório</p>
-                    <Target className="h-5 w-5 text-primary shrink-0" />
+
+                  <div className="mt-5 rounded-2xl border bg-background/75 p-4">
+                    <div className="flex items-center justify-between text-sm text-muted-foreground">
+                      <span>Domínio do tema</span>
+                      <span>82%</span>
+                    </div>
+                    <div className="mt-3 h-2 rounded-full bg-primary-soft overflow-hidden">
+                      <div className="h-full w-[82%] rounded-full bg-primary" />
+                    </div>
+                    <div className="mt-4 grid grid-cols-3 gap-2 text-center text-xs text-muted-foreground">
+                      <span className="rounded-xl bg-secondary px-2 py-2">Flashcards</span>
+                      <span className="rounded-xl bg-secondary px-2 py-2">Quiz</span>
+                      <span className="rounded-xl bg-secondary px-2 py-2">Mapa</span>
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
           </div>
-        </div>
-      </section>
+        </section>
 
-      <section className="container pb-24">
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
-          {features.map((f, i) => (
-            <div key={i} className="bg-card border rounded-2xl p-6 shadow-soft hover:shadow-glow transition-smooth">
-              <div className="bg-primary-soft text-primary inline-flex p-2.5 rounded-xl mb-4">
-                <f.icon className="h-5 w-5" />
-              </div>
-              <h3 className="font-semibold text-lg mb-2">{f.title}</h3>
-              <p className="text-muted-foreground text-sm leading-relaxed">{f.desc}</p>
+        <section className="border-y bg-card/55">
+          <div className="container py-10 md:py-14">
+            <div className="grid gap-5 md:grid-cols-4">
+              {[
+                "Aulas viram plano",
+                "Resumos viram revisão",
+                "Erros viram prioridade",
+                "Rotina vira domínio",
+              ].map((item) => (
+                <div key={item} className="flex items-center gap-3 text-sm font-medium">
+                  <Zap className="h-4 w-4 text-primary shrink-0" />
+                  {item}
+                </div>
+              ))}
             </div>
-          ))}
-        </div>
-      </section>
-
-      <section className="container pb-24">
-        <div className="bg-card border rounded-3xl p-8 md:p-12 shadow-soft grid md:grid-cols-[0.9fr_1.1fr] gap-8 items-center">
-          <div>
-            <Zap className="h-10 w-10 text-primary mb-4" />
-            <h2 className="text-4xl md:text-5xl font-serif font-medium mb-4 text-balance">Seu crescimento, organizado em um sistema.</h2>
-            <p className="text-muted-foreground mb-8 max-w-xl">Mindy Academy junta foco, estudo, autoconsciência e comunidade em uma experiência minimalista feita para virar hábito.</p>
-            <Button size="lg" asChild className="shadow-glow h-12 px-8"><Link to="/auth">Começar minha evolução</Link></Button>
           </div>
-          <div className="grid grid-cols-2 gap-3">
-            {["Flashcards", "Planos", "Quizzes", "Mapas", "Voz", "Reputação"].map((item) => (
-              <div key={item} className="rounded-2xl border bg-secondary/60 p-4">
-                <BookOpen className="h-4 w-4 text-primary mb-3" />
-                <p className="font-medium">{item}</p>
+        </section>
+
+        <section className="container py-16 md:py-24">
+          <div className="max-w-3xl">
+            <p className="text-sm font-medium text-primary mb-3">Aprendizado ativo</p>
+            <h2 className="text-4xl md:text-6xl font-serif font-medium leading-tight text-balance">
+              Menos acúmulo de conteúdo. Mais domínio mensurável.
+            </h2>
+          </div>
+
+          <div className="mt-10 grid md:grid-cols-2 lg:grid-cols-4 gap-4">
+            {features.map((f) => (
+              <div key={f.title} className="border bg-card p-6 shadow-soft rounded-2xl transition-smooth hover:shadow-glow">
+                <div className="mb-5 inline-grid h-11 w-11 place-items-center rounded-2xl bg-primary-soft text-primary">
+                  <f.icon className="h-5 w-5" />
+                </div>
+                <h3 className="text-lg font-semibold mb-2">{f.title}</h3>
+                <p className="text-sm leading-relaxed text-muted-foreground">{f.desc}</p>
               </div>
             ))}
           </div>
-        </div>
-      </section>
+        </section>
+
+        <section className="container pb-20 md:pb-28">
+          <div className="grid lg:grid-cols-[0.9fr_1.1fr] gap-10 items-center border-t pt-14">
+            <div>
+              <div className="mb-5 inline-grid h-12 w-12 place-items-center rounded-2xl bg-primary text-primary-foreground shadow-glow">
+                <Target className="h-5 w-5" />
+              </div>
+              <h2 className="text-4xl md:text-5xl font-serif font-medium leading-tight text-balance">
+                Uma rotina de estudo que te puxa de volta para o que importa.
+              </h2>
+              <p className="mt-5 text-muted-foreground leading-relaxed max-w-xl">
+                A cada sessão, a Mindy mostra o que revisar, onde você está fraco e qual próximo passo gera mais progresso.
+              </p>
+              <Button size="lg" asChild className="mt-8 h-12 px-8 shadow-glow">
+                <Link to="/auth">Começar minha rotina</Link>
+              </Button>
+            </div>
+
+            <div className="grid gap-3">
+              {[
+                { icon: Clock3, title: "Agenda de revisão", text: "Revisões espaçadas por dificuldade e desempenho." },
+                { icon: PenLine, title: "Estudo guiado", text: "Flashcards, quizzes e resumos conectados ao mesmo tema." },
+                { icon: Sparkles, title: "Tutor Mindy", text: "IA para explicar, testar e corrigir seu raciocínio." },
+              ].map((item) => (
+                <div key={item.title} className="flex gap-4 rounded-2xl border bg-card p-5 shadow-soft">
+                  <div className="grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-primary-soft text-primary">
+                    <item.icon className="h-5 w-5" />
+                  </div>
+                  <div>
+                    <h3 className="font-semibold">{item.title}</h3>
+                    <p className="mt-1 text-sm text-muted-foreground leading-relaxed">{item.text}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+      </main>
 
       <footer className="container py-8 text-center text-sm text-muted-foreground border-t">
-        Mindy Academy — desenvolvimento pessoal com aprendizado ativo, IA e consistência.
+        Mindy Academy — estudo ativo, memória treinada e evolução consistente.
       </footer>
     </div>
   );
