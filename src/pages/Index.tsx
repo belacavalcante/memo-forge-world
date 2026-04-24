@@ -112,16 +112,26 @@ const Index = () => {
       </section>
 
       <section className="container pb-24">
-        <div className="bg-card border rounded-3xl p-12 text-center shadow-soft">
-          <Zap className="h-10 w-10 text-primary mx-auto mb-4" />
-          <h2 className="text-3xl md:text-4xl font-semibold mb-4 text-balance">Pronto para virar o jogo dos seus estudos?</h2>
-          <p className="text-muted-foreground mb-8 max-w-xl mx-auto">Junte-se à galera que já está estudando todo dia com IA.</p>
-          <Button size="lg" asChild className="shadow-glow h-12 px-8"><Link to="/auth">Criar minha conta</Link></Button>
+        <div className="bg-card border rounded-3xl p-8 md:p-12 shadow-soft grid md:grid-cols-[0.9fr_1.1fr] gap-8 items-center">
+          <div>
+            <Zap className="h-10 w-10 text-primary mb-4" />
+            <h2 className="text-4xl md:text-5xl font-serif font-medium mb-4 text-balance">Seu crescimento, organizado em um sistema.</h2>
+            <p className="text-muted-foreground mb-8 max-w-xl">Mindy Academy junta foco, estudo, autoconsciência e comunidade em uma experiência minimalista feita para virar hábito.</p>
+            <Button size="lg" asChild className="shadow-glow h-12 px-8"><Link to="/auth">Começar minha evolução</Link></Button>
+          </div>
+          <div className="grid grid-cols-2 gap-3">
+            {["Flashcards", "Planos", "Quizzes", "Mapas", "Voz", "Reputação"].map((item) => (
+              <div key={item} className="rounded-2xl border bg-secondary/60 p-4">
+                <BookOpen className="h-4 w-4 text-primary mb-3" />
+                <p className="font-medium">{item}</p>
+              </div>
+            ))}
+          </div>
         </div>
       </section>
 
       <footer className="container py-8 text-center text-sm text-muted-foreground border-t">
-        Mindy Academy — feito para estudantes que querem dominar conteúdo de verdade.
+        Mindy Academy — desenvolvimento pessoal com aprendizado ativo, IA e consistência.
       </footer>
     </div>
   );
