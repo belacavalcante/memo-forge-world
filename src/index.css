@@ -65,39 +65,39 @@ All colors MUST be HSL.
   }
 
   .dark {
-    --background: 220 18% 7%;
-    --foreground: 42 18% 93%;
-    --card: 220 16% 10%;
-    --card-foreground: 42 18% 93%;
-    --popover: 220 16% 10%;
-    --popover-foreground: 42 18% 93%;
-    --primary: 168 92% 48%;
-    --primary-foreground: 220 18% 7%;
-    --primary-soft: 168 50% 14%;
-    --secondary: 220 13% 14%;
-    --secondary-foreground: 42 18% 93%;
-    --muted: 220 13% 13%;
-    --muted-foreground: 220 10% 65%;
-    --accent: 258 92% 70%;
-    --accent-foreground: 220 18% 7%;
-    --accent-soft: 258 42% 18%;
+    --background: 344 26% 8%;
+    --foreground: 35 26% 92%;
+    --card: 344 20% 11%;
+    --card-foreground: 35 26% 92%;
+    --popover: 344 20% 11%;
+    --popover-foreground: 35 26% 92%;
+    --primary: 344 64% 54%;
+    --primary-foreground: 35 28% 96%;
+    --primary-soft: 344 42% 17%;
+    --secondary: 344 16% 15%;
+    --secondary-foreground: 35 26% 92%;
+    --muted: 344 16% 14%;
+    --muted-foreground: 35 12% 64%;
+    --accent: 84 36% 56%;
+    --accent-foreground: 344 26% 8%;
+    --accent-soft: 84 24% 16%;
     --success: 145 55% 50%;
     --success-foreground: 30 10% 8%;
     --warning: 38 92% 55%;
     --warning-foreground: 30 10% 8%;
     --destructive: 0 70% 55%;
     --destructive-foreground: 0 0% 100%;
-    --border: 30 8% 18%;
-    --input: 30 8% 18%;
-    --ring: 168 92% 48%;
-    --sidebar-background: 220 18% 8%;
-    --sidebar-foreground: 40 15% 90%;
-    --sidebar-primary: 168 92% 48%;
-    --sidebar-primary-foreground: 220 18% 7%;
-    --sidebar-accent: 220 13% 14%;
+    --border: 344 16% 18%;
+    --input: 344 16% 18%;
+    --ring: 344 64% 54%;
+    --sidebar-background: 344 26% 8%;
+    --sidebar-foreground: 35 24% 90%;
+    --sidebar-primary: 344 64% 54%;
+    --sidebar-primary-foreground: 35 28% 96%;
+    --sidebar-accent: 344 16% 15%;
     --sidebar-accent-foreground: 40 15% 95%;
-    --sidebar-border: 220 13% 18%;
-    --sidebar-ring: 168 92% 48%;
+    --sidebar-border: 344 16% 18%;
+    --sidebar-ring: 344 64% 54%;
   }
 }
 
