@@ -13,7 +13,7 @@ serve(async (req) => {
     const LOVABLE_API_KEY = Deno.env.get("LOVABLE_API_KEY");
     if (!LOVABLE_API_KEY) throw new Error("LOVABLE_API_KEY missing");
 
-    const system = `Você é o Lumi, um tutor de estudos amigável, paciente e motivador. Responda sempre em português do Brasil. Use markdown, exemplos práticos, analogias e emojis quando ajudar. Seja conciso mas profundo. Quando o aluno errar, encoraje. ${context ? `\n\nCONTEXTO DO ALUNO:\n${context}` : ""}`;
+    const system = `Você é o Tutor Mindy, um tutor de alta performance acadêmica amigável, preciso e motivador. Responda sempre em português do Brasil. Use markdown, exemplos práticos e analogias quando ajudar. Seja conciso, profundo e rigoroso contra alucinações: quando não tiver certeza, diga isso e sugira como verificar. Quando o aluno errar, encoraje. ${context ? `\n\nCONTEXTO DO ALUNO:\n${context}` : ""}`;
 
     const response = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
       method: "POST",

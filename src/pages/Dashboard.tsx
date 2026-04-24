@@ -74,7 +74,7 @@ export default function Dashboard() {
           <Card className="p-6 hover:shadow-glow transition-smooth h-full">
             <div className="bg-primary-soft text-primary inline-flex p-2.5 rounded-xl mb-4"><Sparkles className="h-5 w-5" /></div>
             <h3 className="font-semibold text-lg">Criar com IA</h3>
-            <p className="text-sm text-muted-foreground mt-1">Cole texto, link do YouTube ou ideia. A IA gera flashcards, resumos e quizzes.</p>
+            <p className="text-sm text-muted-foreground mt-1">Cole texto, link do YouTube ou ideia. A IA gera flashcards, resumos, quizzes e mapas mentais.</p>
           </Card>
         </Link>
         <Link to="/app/groups">

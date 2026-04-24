@@ -89,7 +89,7 @@ export default function Chat() {
     <div className="container max-w-3xl py-8 h-[calc(100vh-3.5rem)] flex flex-col">
       <div className="flex items-center justify-between mb-4">
         <div>
-          <h1 className="text-2xl font-semibold flex items-center gap-2"><Sparkles className="h-6 w-6 text-primary" /> Tutor Lumi</h1>
+          <h1 className="text-2xl font-semibold flex items-center gap-2"><Sparkles className="h-6 w-6 text-primary" /> Tutor Mindy</h1>
           <p className="text-sm text-muted-foreground">Tire dúvidas, peça explicações, monte planos.</p>
         </div>
         <Button variant="ghost" size="sm" onClick={() => setMessages([])}><MessageSquarePlus className="h-4 w-4 mr-1" /> Nova</Button>

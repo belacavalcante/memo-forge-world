@@ -108,6 +108,7 @@ export type Database = {
           subject_id: string | null
           updated_at: string
           user_id: string
+          visibility: Database["public"]["Enums"]["visibility_type"]
         }
         Insert: {
           created_at?: string
@@ -119,6 +120,7 @@ export type Database = {
           subject_id?: string | null
           updated_at?: string
           user_id: string
+          visibility?: Database["public"]["Enums"]["visibility_type"]
         }
         Update: {
           created_at?: string
@@ -130,6 +132,7 @@ export type Database = {
           subject_id?: string | null
           updated_at?: string
           user_id?: string
+          visibility?: Database["public"]["Enums"]["visibility_type"]
         }
         Relationships: [
           {
@@ -287,6 +290,81 @@ export type Database = {
           },
         ]
       }
+      material_upvotes: {
+        Row: {
+          created_at: string
+          creator_user_id: string
+          id: string
+          material_id: string
+          material_type: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          creator_user_id: string
+          id?: string
+          material_id: string
+          material_type: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          creator_user_id?: string
+          id?: string
+          material_id?: string
+          material_type?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      mind_maps: {
+        Row: {
+          created_at: string
+          description: string | null
+          elite_badge: boolean
+          id: string
+          mermaid_code: string
+          source: Database["public"]["Enums"]["source_type"]
+          source_url: string | null
+          subject_id: string | null
+          title: string
+          updated_at: string
+          upvotes_count: number
+          user_id: string
+          visibility: Database["public"]["Enums"]["visibility_type"]
+        }
+        Insert: {
+          created_at?: string
+          description?: string | null
+          elite_badge?: boolean
+          id?: string
+          mermaid_code: string
+          source?: Database["public"]["Enums"]["source_type"]
+          source_url?: string | null
+          subject_id?: string | null
+          title: string
+          updated_at?: string
+          upvotes_count?: number
+          user_id: string
+          visibility?: Database["public"]["Enums"]["visibility_type"]
+        }
+        Update: {
+          created_at?: string
+          description?: string | null
+          elite_badge?: boolean
+          id?: string
+          mermaid_code?: string
+          source?: Database["public"]["Enums"]["source_type"]
+          source_url?: string | null
+          subject_id?: string | null
+          title?: string
+          updated_at?: string
+          upvotes_count?: number
+          user_id?: string
+          visibility?: Database["public"]["Enums"]["visibility_type"]
+        }
+        Relationships: []
+      }
       post_comments: {
         Row: {
           content: string
@@ -330,6 +408,9 @@ export type Database = {
           last_activity_date: string | null
           level: number
           longest_streak: number
+          quiz_accuracy: number
+          reputation: number
+          review_aggressiveness: number
           updated_at: string
           user_id: string
           username: string | null
@@ -345,6 +426,9 @@ export type Database = {
           last_activity_date?: string | null
           level?: number
           longest_streak?: number
+          quiz_accuracy?: number
+          reputation?: number
+          review_aggressiveness?: number
           updated_at?: string
           user_id: string
           username?: string | null
@@ -360,6 +444,9 @@ export type Database = {
           last_activity_date?: string | null
           level?: number
           longest_streak?: number
+          quiz_accuracy?: number
+          reputation?: number
+          review_aggressiveness?: number
           updated_at?: string
           user_id?: string
           username?: string | null
@@ -413,6 +500,7 @@ export type Database = {
           subject_id: string | null
           title: string
           user_id: string
+          visibility: Database["public"]["Enums"]["visibility_type"]
         }
         Insert: {
           created_at?: string
@@ -421,6 +509,7 @@ export type Database = {
           subject_id?: string | null
           title: string
           user_id: string
+          visibility?: Database["public"]["Enums"]["visibility_type"]
         }
         Update: {
           created_at?: string
@@ -429,6 +518,7 @@ export type Database = {
           subject_id?: string | null
           title?: string
           user_id?: string
+          visibility?: Database["public"]["Enums"]["visibility_type"]
         }
         Relationships: [
           {
@@ -522,6 +612,7 @@ export type Database = {
           name: string
           updated_at: string
           user_id: string
+          visibility: Database["public"]["Enums"]["visibility_type"]
         }
         Insert: {
           color?: string | null
@@ -532,6 +623,7 @@ export type Database = {
           name: string
           updated_at?: string
           user_id: string
+          visibility?: Database["public"]["Enums"]["visibility_type"]
         }
         Update: {
           color?: string | null
@@ -542,6 +634,7 @@ export type Database = {
           name?: string
           updated_at?: string
           user_id?: string
+          visibility?: Database["public"]["Enums"]["visibility_type"]
         }
         Relationships: []
       }
@@ -556,6 +649,7 @@ export type Database = {
           title: string
           updated_at: string
           user_id: string
+          visibility: Database["public"]["Enums"]["visibility_type"]
         }
         Insert: {
           content: string
@@ -567,6 +661,7 @@ export type Database = {
           title: string
           updated_at?: string
           user_id: string
+          visibility?: Database["public"]["Enums"]["visibility_type"]
         }
         Update: {
           content?: string
@@ -578,6 +673,7 @@ export type Database = {
           title?: string
           updated_at?: string
           user_id?: string
+          visibility?: Database["public"]["Enums"]["visibility_type"]
         }
         Relationships: [
           {
@@ -628,11 +724,16 @@ export type Database = {
         }
         Returns: boolean
       }
+      update_learning_performance: {
+        Args: { _user_id: string }
+        Returns: undefined
+      }
     }
     Enums: {
       app_role: "admin" | "moderator" | "user"
       difficulty: "easy" | "medium" | "hard"
       source_type: "manual" | "pdf" | "text" | "youtube" | "audio"
+      visibility_type: "private" | "public"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -763,6 +864,7 @@ export const Constants = {
       app_role: ["admin", "moderator", "user"],
       difficulty: ["easy", "medium", "hard"],
       source_type: ["manual", "pdf", "text", "youtube", "audio"],
+      visibility_type: ["private", "public"],
     },
   },
 } as const

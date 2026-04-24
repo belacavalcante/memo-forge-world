@@ -19,6 +19,8 @@ import GroupDetail from "./pages/GroupDetail.tsx";
 import Achievements from "./pages/Achievements.tsx";
 import SummaryView from "./pages/SummaryView.tsx";
 import QuizView from "./pages/QuizView.tsx";
+import MindMaps from "./pages/MindMaps.tsx";
+import MindMapView from "./pages/MindMapView.tsx";
 import { AppLayout } from "./components/AppLayout";
 import { AuthProvider } from "./hooks/useAuth";
 
@@ -45,6 +47,8 @@ const App = () => (
               <Route path="plan" element={<Plan />} />
               <Route path="groups" element={<Groups />} />
               <Route path="groups/:id" element={<GroupDetail />} />
+              <Route path="mind-maps" element={<MindMaps />} />
+              <Route path="mind-maps/:id" element={<MindMapView />} />
               <Route path="achievements" element={<Achievements />} />
               <Route path="summaries/:id" element={<SummaryView />} />
               <Route path="quizzes/:id" element={<QuizView />} />

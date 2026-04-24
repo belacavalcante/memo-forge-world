@@ -1,5 +1,5 @@
 import { NavLink, useLocation } from "react-router-dom";
-import { Home, BookOpen, Layers, Sparkles, MessageSquare, Users, Target, Trophy, LogOut } from "lucide-react";
+import { Home, BookOpen, Layers, Sparkles, MessageSquare, Users, Target, Trophy, LogOut, BrainCircuit } from "lucide-react";
 import {
   Sidebar, SidebarContent, SidebarGroup, SidebarGroupContent, SidebarGroupLabel,
   SidebarMenu, SidebarMenuButton, SidebarMenuItem, useSidebar, SidebarHeader, SidebarFooter,
@@ -12,6 +12,7 @@ const main = [
   { title: "Início", url: "/app", icon: Home, end: true },
   { title: "Matérias", url: "/app/subjects", icon: BookOpen },
   { title: "Flashcards", url: "/app/study", icon: Layers },
+  { title: "Mapas mentais", url: "/app/mind-maps", icon: BrainCircuit },
   { title: "Gerar com IA", url: "/app/create", icon: Sparkles },
   { title: "Chat com tutor", url: "/app/chat", icon: MessageSquare },
   { title: "Plano de estudos", url: "/app/plan", icon: Target },

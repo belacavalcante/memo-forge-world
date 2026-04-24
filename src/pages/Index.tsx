@@ -8,12 +8,12 @@ import {
 } from "lucide-react";
 
 const features = [
-  { icon: Brain, title: "Flashcards inteligentes", desc: "Repetição espaçada que se adapta. Cards difíceis voltam mais, fáceis somem." },
-  { icon: Sparkles, title: "IA gera tudo por você", desc: "Cole um texto, link do YouTube ou PDF. A IA cria flashcards, resumos, quizzes e mapas mentais." },
-  { icon: MessageSquare, title: "Tutor IA 24/7", desc: "Tire dúvidas, peça explicações, monte planos de estudo. Como ter um professor particular." },
-  { icon: Mic, title: "Responda em áudio", desc: "Pratique pronunciando as respostas em voz alta — perfeito para idiomas e revisão ativa." },
-  { icon: Users, title: "Galera estudando junto", desc: "Grupos por área (vestibular, IA, marketing). Compartilhe, compita, evolua junto." },
-  { icon: Trophy, title: "XP, streak e níveis", desc: "Estudar todo dia vira hábito. Mantenha sua sequência e suba de nível." },
+  { icon: Brain, title: "SRS adaptativo", desc: "Cards fáceis espaçam, médios encurtam se seu desempenho cair e difíceis voltam em horas." },
+  { icon: Sparkles, title: "IA contextual", desc: "Transforme textos, YouTube e notas em flashcards, resumos, quizzes e mapas mentais editáveis." },
+  { icon: MessageSquare, title: "Tutor Mindy", desc: "Converse com IA para entender, revisar e montar planos com metas diárias e mensais." },
+  { icon: Mic, title: "Domínio por voz", desc: "Responda falando e pratique retenção ativa com feedback sobre clareza e precisão." },
+  { icon: Users, title: "Comunidades", desc: "Galera de IA, pré-vestibular e marketing com troca de conhecimento e curadoria." },
+  { icon: Trophy, title: "Gamificação premium", desc: "Streak, XP, níveis e conquistas para transformar consistência em progresso visível." },
 ];
 
 const Index = () => {
@@ -33,17 +33,17 @@ const Index = () => {
       <section className="container pt-16 pb-24 text-center">
         <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-primary-soft text-primary text-sm font-medium mb-6 animate-fade-in">
           <Sparkles className="h-3.5 w-3.5" />
-          Estudar nunca foi tão leve
+          Alta performance acadêmica com IA
         </div>
         <h1 className="text-5xl md:text-7xl font-semibold tracking-tight text-balance mb-6 animate-fade-in">
-          Seu segundo cérebro<br />
+          Mindy Academy<br />
           <span className="bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
-            para aprender de verdade.
+            para retenção máxima.
           </span>
         </h1>
         <p className="text-xl text-muted-foreground max-w-2xl mx-auto mb-10 text-balance animate-fade-in">
-          Flashcards com IA, resumos automáticos, tutor pessoal, grupos de estudo e gamificação.
-          Tudo num só app, organizado do seu jeito.
+          Transforme materiais brutos em um ecossistema de aprendizado ativo com SRS, IA contextual,
+          mapas mentais, comunidades e gamificação refinada.
         </p>
         <div className="flex flex-col sm:flex-row gap-3 justify-center animate-fade-in">
           <Button size="lg" asChild className="shadow-glow text-base h-12 px-8">
@@ -84,7 +84,7 @@ const Index = () => {
       </section>
 
       <footer className="container py-8 text-center text-sm text-muted-foreground border-t">
-        Lumi — feito para estudantes que querem aprender de verdade.
+        Mindy Academy — feito para estudantes que querem dominar conteúdo de verdade.
       </footer>
     </div>
   );
