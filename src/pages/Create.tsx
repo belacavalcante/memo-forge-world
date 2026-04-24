@@ -22,6 +22,7 @@ export default function Create() {
   const [youtubeUrl, setYoutubeUrl] = useState("");
   const [file, setFile] = useState<File | null>(null);
   const [subjectId, setSubjectId] = useState<string>("none");
+  const [visibility, setVisibility] = useState<"private" | "public">("private");
   const [subjects, setSubjects] = useState<any[]>([]);
   const [loading, setLoading] = useState(false);
 
@@ -71,10 +72,11 @@ export default function Create() {
       const subj = subjectId === "none" ? null : subjectId;
 
       if (mode === "flashcards") {
-        const { data: deck, error: dErr } = await supabase.from("decks").insert({
+        const { data: deck, error: dErr } = await (supabase as any).from("decks").insert({
           name: `Deck IA · ${new Date().toLocaleDateString("pt-BR")}`,
           subject_id: subj, user_id: user.id, source: sourceType === "youtube" ? "youtube" : "text",
           source_url: sourceType === "youtube" ? youtubeUrl : null,
+          visibility,
         }).select().single();
         if (dErr) throw dErr;
         const cardsToInsert = (gen.cards as any[]).map(c => ({
@@ -84,17 +86,31 @@ export default function Create() {
         toast.success(`${cardsToInsert.length} flashcards criados!`);
         nav(`/app/decks/${deck.id}`);
       } else if (mode === "summary") {
-        const { data: sum, error: sErr } = await supabase.from("summaries").insert({
+        const mermaidCode = gen.mermaidCode || `mindmap\n  root(Resumo)\n    Ideias principais\n    Revisão ativa`;
+        const { data: sum, error: sErr } = await (supabase as any).from("summaries").insert({
           user_id: user.id, subject_id: subj, title: gen.title || "Resumo", content: JSON.stringify(gen),
           source: sourceType === "youtube" ? "youtube" : "text",
+          source_url: sourceType === "youtube" ? youtubeUrl : null,
+          visibility,
         }).select().single();
         if (sErr) throw sErr;
+        await (supabase as any).from("mind_maps").insert({
+          user_id: user.id,
+          subject_id: subj,
+          title: gen.title || "Mapa mental",
+          description: "Gerado automaticamente a partir do resumo.",
+          mermaid_code: mermaidCode,
+          source: sourceType === "youtube" ? "youtube" : "text",
+          source_url: sourceType === "youtube" ? youtubeUrl : null,
+          visibility,
+        });
         toast.success("Resumo gerado!");
         nav(`/app/summaries/${sum.id}`);
       } else if (mode === "quiz") {
-        const { data: qz, error: qErr } = await supabase.from("quizzes").insert({
+        const { data: qz, error: qErr } = await (supabase as any).from("quizzes").insert({
           user_id: user.id, subject_id: subj, title: `Quiz · ${new Date().toLocaleDateString("pt-BR")}`,
           questions: gen.questions,
+          visibility,
         }).select().single();
         if (qErr) throw qErr;
         toast.success("Quiz criado!");
