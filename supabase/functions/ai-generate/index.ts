@@ -25,6 +25,8 @@ serve(async (req) => {
     let tool: any;
     let system = `Você é um tutor brilhante. Responda sempre em ${language}. Seja didático, claro e direto.`;
 
+    const toMermaid = ` Use sintaxe Mermaid mindmap válida quando solicitado, com um nó central e ramificações curtas. Não use aspas problemáticas nem markdown em volta do código.`;
+
     if (mode === "flashcards") {
       tool = {
         type: "function",
@@ -114,13 +116,14 @@ serve(async (req) => {
                 required: ["central", "branches"],
                 additionalProperties: false,
               },
+              mermaidCode: { type: "string", description: "Código Mermaid mindmap editável" },
             },
-            required: ["title", "summary", "keyPoints", "mindMap"],
+            required: ["title", "summary", "keyPoints", "mindMap", "mermaidCode"],
             additionalProperties: false,
           },
         },
       };
-      system += ` Crie um resumo completo, estruturado e lúdico em markdown, com pontos-chave e um mapa mental hierárquico.`;
+      system += ` Crie um resumo completo, estruturado e lúdico em markdown, com pontos-chave e um mapa mental hierárquico.${toMermaid}`;
     } else if (mode === "study_plan") {
       tool = {
         type: "function",
