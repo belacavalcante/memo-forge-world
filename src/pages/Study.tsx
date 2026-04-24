@@ -19,6 +19,7 @@ export default function Study() {
   const [done, setDone] = useState(false);
   const [recording, setRecording] = useState(false);
   const [audioUrl, setAudioUrl] = useState<string | null>(null);
+  const [reviewAggressiveness, setReviewAggressiveness] = useState(1);
   const recorderRef = useRef<MediaRecorder | null>(null);
   const chunksRef = useRef<Blob[]>([]);
 
@@ -27,13 +28,15 @@ export default function Study() {
     let q = supabase.from("flashcards").select("*").eq("user_id", user.id).lte("due_at", new Date().toISOString()).order("due_at").limit(30);
     if (deckId) q = q.eq("deck_id", deckId);
     q.then(({ data }) => setCards(data ?? []));
+    supabase.from("profiles").select("review_aggressiveness").eq("user_id", user.id).maybeSingle()
+      .then(({ data }) => setReviewAggressiveness(Number(data?.review_aggressiveness ?? 1)));
   }, [user, deckId]);
 
   const card = cards[idx];
 
   const grade = async (difficulty: "easy" | "medium" | "hard") => {
     if (!card || !user) return;
-    const updates = nextReview(card, difficulty);
+    const updates = nextReview(card, difficulty, { reviewAggressiveness });
     await Promise.all([
       supabase.from("flashcards").update(updates).eq("id", card.id),
       supabase.from("flashcard_reviews").insert({ flashcard_id: card.id, user_id: user.id, difficulty }),
