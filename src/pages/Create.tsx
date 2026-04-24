@@ -163,6 +163,17 @@ export default function Create() {
           </div>
         )}
 
+        <div className="space-y-2 mb-6">
+          <Label>Privacidade</Label>
+          <Select value={visibility} onValueChange={(v) => setVisibility(v as "private" | "public")}>
+            <SelectTrigger><SelectValue /></SelectTrigger>
+            <SelectContent>
+              <SelectItem value="private">Privado</SelectItem>
+              <SelectItem value="public">Público na comunidade</SelectItem>
+            </SelectContent>
+          </Select>
+        </div>
+
         <Tabs defaultValue="text">
           <TabsList className="grid grid-cols-3 w-full">
             <TabsTrigger value="text"><FileText className="h-4 w-4 mr-1" /> Texto</TabsTrigger>
