@@ -4,59 +4,96 @@ import { Logo } from "@/components/Logo";
 import { useAuth } from "@/hooks/useAuth";
 import {
   Brain, Sparkles, Users, Target, Mic, FileUp, MessageSquare,
-  Trophy, Zap, BookOpen, ArrowRight, Check
+  Trophy, Zap, BookOpen, ArrowRight, Check, Layers, Lock
 } from "lucide-react";
 
 const features = [
-  { icon: Brain, title: "SRS adaptativo", desc: "Cards fáceis espaçam, médios encurtam se seu desempenho cair e difíceis voltam em horas." },
-  { icon: Sparkles, title: "IA contextual", desc: "Transforme textos, YouTube e notas em flashcards, resumos, quizzes e mapas mentais editáveis." },
-  { icon: MessageSquare, title: "Tutor Mindy", desc: "Converse com IA para entender, revisar e montar planos com metas diárias e mensais." },
-  { icon: Mic, title: "Domínio por voz", desc: "Responda falando e pratique retenção ativa com feedback sobre clareza e precisão." },
-  { icon: Users, title: "Comunidades", desc: "Galera de IA, pré-vestibular e marketing com troca de conhecimento e curadoria." },
-  { icon: Trophy, title: "Gamificação premium", desc: "Streak, XP, níveis e conquistas para transformar consistência em progresso visível." },
+  { icon: Brain, title: "Memória treinada", desc: "SRS adaptativo que traz de volta o que importa antes de você esquecer." },
+  { icon: Sparkles, title: "IA de performance", desc: "Transforme aulas, vídeos e anotações em planos, flashcards, quizzes e resumos vivos." },
+  { icon: Layers, title: "Mapas mentais", desc: "Visualize ideias, hábitos e matérias em diagramas editáveis para conectar tudo." },
+  { icon: Mic, title: "Domínio por voz", desc: "Explique em voz alta e receba feedback para clareza, precisão e confiança." },
+  { icon: Users, title: "Comunidades Elite", desc: "Compartilhe materiais públicos, receba votos e construa reputação com curadoria." },
+  { icon: Lock, title: "Privacidade total", desc: "Cada pasta, matéria ou conteúdo pode ser privado ou público com um toque." },
 ];
+
+const ritual = ["capturar", "organizar", "testar", "revisar", "evoluir"];
 
 const Index = () => {
   const { user, loading } = useAuth();
   if (!loading && user) return <Navigate to="/app" replace />;
 
   return (
-    <div className="min-h-screen gradient-soft">
-      <header className="container py-6 flex items-center justify-between">
+    <div className="min-h-screen gradient-soft overflow-hidden">
+      <header className="container py-5 flex items-center justify-between">
         <Logo />
         <div className="flex gap-2">
           <Button variant="ghost" asChild><Link to="/auth">Entrar</Link></Button>
-          <Button asChild><Link to="/auth">Começar grátis</Link></Button>
+          <Button asChild><Link to="/auth">Começar</Link></Button>
         </div>
       </header>
 
-      <section className="container pt-16 pb-24 text-center">
+      <section className="container pt-8 pb-16 md:pt-14 md:pb-20">
+        <div className="grid lg:grid-cols-[1.05fr_0.95fr] gap-10 items-center">
+          <div className="text-center lg:text-left">
         <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-primary-soft text-primary text-sm font-medium mb-6 animate-fade-in">
           <Sparkles className="h-3.5 w-3.5" />
-          Alta performance acadêmica com IA
+          Desenvolvimento pessoal guiado por IA
         </div>
-        <h1 className="text-5xl md:text-7xl font-semibold tracking-tight text-balance mb-6 animate-fade-in">
-          Mindy Academy<br />
+        <h1 className="text-6xl md:text-8xl lg:text-9xl font-serif font-medium tracking-normal text-balance mb-6 animate-fade-in leading-[0.86]">
+          Mindy<br />
           <span className="bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
-            para retenção máxima.
+            Academy
           </span>
         </h1>
-        <p className="text-xl text-muted-foreground max-w-2xl mx-auto mb-10 text-balance animate-fade-in">
-          Transforme materiais brutos em um ecossistema de aprendizado ativo com SRS, IA contextual,
-          mapas mentais, comunidades e gamificação refinada.
+        <p className="text-lg md:text-xl text-muted-foreground max-w-xl mx-auto lg:mx-0 mb-8 text-balance animate-fade-in">
+          Um app para estudar, pensar melhor e evoluir todos os dias. Transforme materiais brutos em rituais de aprendizado ativo com IA, SRS, mapas mentais, voz, comunidade e progresso real.
         </p>
-        <div className="flex flex-col sm:flex-row gap-3 justify-center animate-fade-in">
+        <div className="flex flex-col sm:flex-row gap-3 justify-center lg:justify-start animate-fade-in">
           <Button size="lg" asChild className="shadow-glow text-base h-12 px-8">
-            <Link to="/auth">Começar agora — é grátis <ArrowRight className="ml-1 h-4 w-4" /></Link>
+            <Link to="/auth">Criar meu sistema <ArrowRight className="ml-1 h-4 w-4" /></Link>
           </Button>
           <Button size="lg" variant="outline" asChild className="text-base h-12 px-8">
-            <Link to="/auth">Ver os grupos</Link>
+            <Link to="/auth">Explorar comunidade</Link>
           </Button>
         </div>
-        <div className="mt-8 flex items-center justify-center gap-6 text-sm text-muted-foreground">
-          <span className="flex items-center gap-1.5"><Check className="h-4 w-4 text-success" /> Sem cartão</span>
-          <span className="flex items-center gap-1.5"><Check className="h-4 w-4 text-success" /> IA inclusa</span>
-          <span className="flex items-center gap-1.5"><Check className="h-4 w-4 text-success" /> Em português</span>
+        <div className="mt-7 flex flex-wrap items-center justify-center lg:justify-start gap-4 text-sm text-muted-foreground">
+          <span className="flex items-center gap-1.5"><Check className="h-4 w-4 text-success" /> SRS adaptativo</span>
+          <span className="flex items-center gap-1.5"><Check className="h-4 w-4 text-success" /> Tutor IA</span>
+          <span className="flex items-center gap-1.5"><Check className="h-4 w-4 text-success" /> Público ou privado</span>
+        </div>
+          </div>
+
+          <div className="relative mx-auto w-full max-w-md animate-fade-in">
+            <div className="rounded-[2rem] border bg-card p-4 shadow-soft">
+              <div className="aspect-[4/5] rounded-[1.5rem] bg-secondary p-6 flex flex-col justify-between overflow-hidden">
+                <div className="flex items-center justify-between text-sm text-muted-foreground">
+                  <span>ritual diário</span>
+                  <span>82%</span>
+                </div>
+                <div>
+                  <p className="text-8xl md:text-9xl font-serif leading-none text-primary/25">grow</p>
+                  <div className="grid grid-cols-2 gap-3 -mt-6">
+                    {ritual.map((item, index) => (
+                      <div key={item} className="rounded-xl border bg-card/80 p-3 shadow-soft">
+                        <div className="mb-3 h-1.5 rounded-full bg-primary-soft overflow-hidden">
+                          <div className="h-full bg-primary" style={{ width: `${52 + index * 9}%` }} />
+                        </div>
+                        <p className="font-medium capitalize">{item}</p>
+                        <p className="text-xs text-muted-foreground mt-1">Mindy AI</p>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+                <div className="rounded-2xl bg-background/80 border p-4">
+                  <p className="text-sm text-muted-foreground mb-2">Próxima revisão</p>
+                  <div className="flex items-center justify-between gap-4">
+                    <p className="font-semibold">Hábitos, foco e repertório</p>
+                    <Target className="h-5 w-5 text-primary shrink-0" />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </section>
 
