@@ -121,4 +121,28 @@ All colors MUST be HSL.
   .shadow-glow { box-shadow: var(--shadow-glow); }
   .transition-smooth { transition: var(--transition-smooth); }
   .text-balance { text-wrap: balance; }
+
+  .mindy-map-shell {
+    background:
+      radial-gradient(circle at 18% 12%, hsl(var(--primary) / 0.16), transparent 32%),
+      radial-gradient(circle at 86% 10%, hsl(var(--accent) / 0.18), transparent 26%),
+      linear-gradient(180deg, hsl(var(--card)), hsl(var(--secondary) / 0.46));
+  }
+
+  .mindy-map-node {
+    --node-hue: var(--primary);
+    border-color: hsl(var(--node-hue) / 0.34);
+    background: linear-gradient(135deg, hsl(var(--node-hue) / 0.18), hsl(var(--card) / 0.94));
+    box-shadow: 0 18px 38px -24px hsl(var(--node-hue) / 0.65);
+  }
+
+  .mindy-map-node:hover {
+    border-color: hsl(var(--node-hue) / 0.72);
+    box-shadow: 0 20px 46px -22px hsl(var(--node-hue) / 0.78);
+  }
+
+  .mindy-map-dot {
+    background: hsl(var(--node-hue));
+    box-shadow: 0 0 0 6px hsl(var(--node-hue) / 0.14);
+  }
 }
