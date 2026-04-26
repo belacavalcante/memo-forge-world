@@ -376,6 +376,7 @@ export default function MindMapView() {
             <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Gestos rápidos</p>
             {[
               { icon: MousePointer2, text: "Arraste blocos para reorganizar." },
+              { icon: MousePointer2, text: "Segure o botão direito para mover o canvas." },
               { icon: GitCommit, text: "Puxe a bolinha lateral para conectar." },
               { icon: Type, text: "Duplo clique para editar o texto." },
               { icon: Trash2, text: "Delete remove bloco ou conexão." },
@@ -430,16 +431,18 @@ export default function MindMapView() {
 
           <div
             ref={canvasRef}
-            className="relative min-h-0 flex-1 cursor-crosshair overflow-hidden touch-none"
+            className={`relative min-h-0 flex-1 overflow-hidden touch-none ${isPanning ? "cursor-grabbing" : "cursor-grab"}`}
             style={{
               backgroundImage: "radial-gradient(hsl(var(--border)) 1px, transparent 1px)",
               backgroundSize: "24px 24px",
               backgroundPosition: "-12px -12px",
             }}
+            onMouseDown={handleCanvasMouseDown}
             onMouseMove={handleCanvasMouseMove}
             onMouseUp={handleCanvasMouseUp}
             onMouseLeave={handleCanvasMouseUp}
             onClick={handleCanvasClick}
+            onContextMenu={(event) => event.preventDefault()}
           >
             <svg className="pointer-events-none absolute inset-0 h-full w-full" style={{ zIndex: 0 }}>
               <defs>
