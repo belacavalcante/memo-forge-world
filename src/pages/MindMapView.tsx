@@ -148,6 +148,7 @@ export default function MindMapView() {
   const [mousePos, setMousePos] = useState<MousePoint>({ x: 0, y: 0 });
   const [openTabs, setOpenTabs] = useState<string[]>([]);
   const [activeTabId, setActiveTabId] = useState<string | null>(null);
+  const [zoom, setZoom] = useState(1);
 
   useEffect(() => {
     if (!id) return;
@@ -203,8 +204,21 @@ export default function MindMapView() {
   const getMouseCoords = (event: ReactMouseEvent): MousePoint => {
     if (!canvasRef.current) return { x: 0, y: 0 };
     const rect = canvasRef.current.getBoundingClientRect();
-    return { x: event.clientX - rect.left, y: event.clientY - rect.top };
+    return { x: (event.clientX - rect.left) / zoom, y: (event.clientY - rect.top) / zoom };
   };
+
+  const rootNode = useMemo(() => nodes.find((node) => node.id === "root") ?? nodes[0] ?? null, [nodes]);
+  const rootConcepts = useMemo(
+    () =>
+      edges
+        .filter((edge) => edge.source === rootNode?.id)
+        .map((edge) => nodes.find((node) => node.id === edge.target)?.text)
+        .filter(Boolean)
+        .slice(0, 4) as string[],
+    [edges, nodes, rootNode?.id],
+  );
+
+  const updateZoom = (nextZoom: number) => setZoom(clampZoom(nextZoom));
 
   const updateNodeText = (nodeId: string, text: string) => {
     setNodes((current) => current.map((node) => (node.id === nodeId ? { ...node, text } : node)));
