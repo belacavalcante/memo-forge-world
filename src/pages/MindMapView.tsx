@@ -1,10 +1,11 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import type { CSSProperties, MouseEvent as ReactMouseEvent } from "react";
+import type { CSSProperties, MouseEvent as ReactMouseEvent, WheelEvent as ReactWheelEvent } from "react";
 import { Link, useParams } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import { Slider } from "@/components/ui/slider";
 import {
   ArrowLeft,
   Edit2,
@@ -13,10 +14,14 @@ import {
   Palette,
   Plus,
   Save,
+  RotateCcw,
+  Target,
   Trash2,
   Type,
   ThumbsUp,
   X,
+  ZoomIn,
+  ZoomOut,
 } from "lucide-react";
 import { toast } from "sonner";
 
@@ -46,6 +51,11 @@ type MousePoint = { x: number; y: number };
 
 const NODE_WIDTH = 208;
 const NODE_HEIGHT = 68;
+const ROOT_NODE_WIDTH = 248;
+const ROOT_NODE_HEIGHT = 86;
+const MIN_ZOOM = 0.45;
+const MAX_ZOOM = 1.7;
+const ZOOM_STEP = 0.12;
 
 const COLORS: Array<{ key: NodeColorKey; name: string; hue: string; soft: string; ink: string }> = [
   { key: "default", name: "Osso", hue: "var(--card)", soft: "var(--secondary)", ink: "var(--foreground)" },
@@ -116,6 +126,8 @@ const serializeMap = (nodes: MindNode[], edges: MindEdge[]) => JSON.stringify({ 
 
 const getColor = (key: NodeColorKey) => COLORS.find((color) => color.key === key) ?? COLORS[0];
 
+const clampZoom = (value: number) => Math.min(MAX_ZOOM, Math.max(MIN_ZOOM, Number(value.toFixed(2))));
+
 export default function MindMapView() {
   const { id } = useParams();
   const { user } = useAuth();
@@ -136,6 +148,7 @@ export default function MindMapView() {
   const [mousePos, setMousePos] = useState<MousePoint>({ x: 0, y: 0 });
   const [openTabs, setOpenTabs] = useState<string[]>([]);
   const [activeTabId, setActiveTabId] = useState<string | null>(null);
+  const [zoom, setZoom] = useState(1);
 
   useEffect(() => {
     if (!id) return;
@@ -191,8 +204,21 @@ export default function MindMapView() {
   const getMouseCoords = (event: ReactMouseEvent): MousePoint => {
     if (!canvasRef.current) return { x: 0, y: 0 };
     const rect = canvasRef.current.getBoundingClientRect();
-    return { x: event.clientX - rect.left, y: event.clientY - rect.top };
+    return { x: (event.clientX - rect.left) / zoom, y: (event.clientY - rect.top) / zoom };
   };
+
+  const rootNode = useMemo(() => nodes.find((node) => node.id === "root") ?? nodes[0] ?? null, [nodes]);
+  const rootConcepts = useMemo(
+    () =>
+      edges
+        .filter((edge) => edge.source === rootNode?.id)
+        .map((edge) => nodes.find((node) => node.id === edge.target)?.text)
+        .filter(Boolean)
+        .slice(0, 4) as string[],
+    [edges, nodes, rootNode?.id],
+  );
+
+  const updateZoom = (nextZoom: number) => setZoom(clampZoom(nextZoom));
 
   const updateNodeText = (nodeId: string, text: string) => {
     setNodes((current) => current.map((node) => (node.id === nodeId ? { ...node, text } : node)));
@@ -296,6 +322,11 @@ export default function MindMapView() {
     }
   };
 
+  const handleCanvasWheel = (event: ReactWheelEvent<HTMLDivElement>) => {
+    event.preventDefault();
+    updateZoom(zoom - Math.sign(event.deltaY) * ZOOM_STEP);
+  };
+
   const handleNodeMouseDown = (event: ReactMouseEvent<HTMLDivElement>, nodeId: string) => {
     if (event.button === 2) {
       event.preventDefault();
@@ -336,11 +367,18 @@ export default function MindMapView() {
     setMousePos(getMouseCoords(event));
   };
 
+  const getNodeSize = (node: MindNode) => ({
+    width: node.id === "root" ? ROOT_NODE_WIDTH : NODE_WIDTH,
+    height: node.id === "root" ? ROOT_NODE_HEIGHT : NODE_HEIGHT,
+  });
+
   const renderEdge = (sourceNode: MindNode, targetNode: MindNode | MousePoint, isTemp = false) => {
-    const startX = sourceNode.x + NODE_WIDTH;
-    const startY = sourceNode.y + NODE_HEIGHT / 2;
+    const sourceSize = getNodeSize(sourceNode);
+    const targetSize = "id" in targetNode ? getNodeSize(targetNode) : { width: 0, height: 0 };
+    const startX = sourceNode.x + sourceSize.width;
+    const startY = sourceNode.y + sourceSize.height / 2;
     const endX = targetNode.x;
-    const endY = isTemp ? targetNode.y : targetNode.y + NODE_HEIGHT / 2;
+    const endY = isTemp ? targetNode.y : targetNode.y + targetSize.height / 2;
     const controlPointOffset = Math.max(Math.abs(endX - startX) / 2, 58);
     return `M ${startX} ${startY} C ${startX + controlPointOffset} ${startY}, ${endX - controlPointOffset} ${endY}, ${endX} ${endY}`;
   };
@@ -376,6 +414,7 @@ export default function MindMapView() {
             <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Gestos rápidos</p>
             {[
               { icon: MousePointer2, text: "Arraste blocos para reorganizar." },
+              { icon: ZoomIn, text: "Use a roda do mouse para aproximar ou afastar." },
               { icon: MousePointer2, text: "Segure o botão direito para mover o canvas." },
               { icon: GitCommit, text: "Puxe a bolinha lateral para conectar." },
               { icon: Type, text: "Duplo clique para editar o texto." },
@@ -429,6 +468,20 @@ export default function MindMapView() {
             </div>
           )}
 
+          <div className="absolute bottom-5 left-1/2 z-30 flex w-[min(92%,30rem)] -translate-x-1/2 items-center gap-3 rounded-full border bg-card/95 px-4 py-2 shadow-glow backdrop-blur-md">
+            <button onClick={() => updateZoom(zoom - ZOOM_STEP)} className="rounded-full p-1.5 text-muted-foreground transition-smooth hover:bg-secondary hover:text-foreground" title="Diminuir zoom">
+              <ZoomOut className="h-4 w-4" />
+            </button>
+            <Slider value={[zoom]} min={MIN_ZOOM} max={MAX_ZOOM} step={0.05} onValueChange={([value]) => updateZoom(value)} className="flex-1" />
+            <button onClick={() => updateZoom(zoom + ZOOM_STEP)} className="rounded-full p-1.5 text-muted-foreground transition-smooth hover:bg-secondary hover:text-foreground" title="Aumentar zoom">
+              <ZoomIn className="h-4 w-4" />
+            </button>
+            <button onClick={() => updateZoom(1)} className="rounded-full p-1.5 text-muted-foreground transition-smooth hover:bg-secondary hover:text-foreground" title="Resetar zoom">
+              <RotateCcw className="h-4 w-4" />
+            </button>
+            <span className="min-w-12 text-right text-xs font-semibold text-muted-foreground">{Math.round(zoom * 100)}%</span>
+          </div>
+
           <div
             ref={canvasRef}
             className={`relative min-h-0 flex-1 overflow-hidden touch-none ${isPanning ? "cursor-grabbing" : "cursor-grab"}`}
@@ -442,8 +495,29 @@ export default function MindMapView() {
             onMouseUp={handleCanvasMouseUp}
             onMouseLeave={handleCanvasMouseUp}
             onClick={handleCanvasClick}
+            onWheel={handleCanvasWheel}
             onContextMenu={(event) => event.preventDefault()}
           >
+            <div className="absolute left-5 top-5 z-20 max-w-sm rounded-lg border bg-card/92 p-4 shadow-soft backdrop-blur-md">
+              <div className="flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+                <Target className="h-4 w-4 text-primary" /> Conceito principal
+              </div>
+              <h2 className="mt-2 text-xl font-semibold leading-tight">{rootNode?.text ?? map.title}</h2>
+              {rootConcepts.length > 0 && (
+                <div className="mt-3 flex flex-wrap gap-2">
+                  {rootConcepts.map((concept) => (
+                    <span key={concept} className="rounded-full bg-primary-soft px-2.5 py-1 text-xs font-medium text-primary">
+                      {concept}
+                    </span>
+                  ))}
+                </div>
+              )}
+            </div>
+
+            <div
+              className="absolute left-0 top-0 h-[2200px] w-[3200px] origin-top-left"
+              style={{ transform: `scale(${zoom})`, zIndex: 1 }}
+            >
             <svg className="pointer-events-none absolute inset-0 h-full w-full" style={{ zIndex: 0 }}>
               <defs>
                 <marker id="mindy-arrow" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
@@ -501,9 +575,10 @@ export default function MindMapView() {
                 const isSelected = selectedNodeId === node.id;
                 const isEditing = editingNodeId === node.id;
                 const color = getColor(node.colorKey);
+                const size = getNodeSize(node);
                 const nodeStyle: CSSProperties = {
-                  width: NODE_WIDTH,
-                  height: NODE_HEIGHT,
+                  width: size.width,
+                  height: size.height,
                   left: node.x,
                   top: node.y,
                   cursor: draggingNodeId === node.id ? "grabbing" : canEdit ? "grab" : "default",
@@ -516,7 +591,7 @@ export default function MindMapView() {
                 return (
                   <div
                     key={node.id}
-                    className="group pointer-events-auto absolute flex select-none items-center justify-center rounded-lg border-2 px-4 shadow-soft"
+                    className={`group pointer-events-auto absolute flex select-none items-center justify-center rounded-lg border-2 px-4 shadow-soft ${node.id === "root" ? "ring-4 ring-primary/15" : ""}`}
                     style={{
                       ...nodeStyle,
                       transform: isSelected ? "scale(1.025)" : undefined,
@@ -556,7 +631,7 @@ export default function MindMapView() {
                           onMouseDown={(event) => event.stopPropagation()}
                         />
                       ) : (
-                        <span className="block truncate text-sm font-semibold pointer-events-none">{node.text}</span>
+                        <span className={`pointer-events-none block truncate font-semibold ${node.id === "root" ? "text-base" : "text-sm"}`}>{node.text}</span>
                       )}
                     </div>
                     {canEdit && (
@@ -572,6 +647,7 @@ export default function MindMapView() {
                 );
               })}
             </div>
+          </div>
           </div>
         </section>
 
