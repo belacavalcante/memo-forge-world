@@ -32,6 +32,19 @@ All colors MUST be HSL.
     --accent-foreground: 0 0% 100%;
     --accent-soft: 84 36% 90%;
 
+    --map-blue: 204 74% 46%;
+    --map-blue-soft: 204 84% 93%;
+    --map-blue-ink: 204 78% 28%;
+    --map-amber: 38 92% 50%;
+    --map-amber-soft: 42 96% 91%;
+    --map-amber-ink: 35 84% 29%;
+    --map-rose: 350 72% 55%;
+    --map-rose-soft: 350 86% 94%;
+    --map-rose-ink: 348 72% 34%;
+    --map-purple: 276 58% 58%;
+    --map-purple-soft: 276 72% 94%;
+    --map-purple-ink: 276 58% 34%;
+
     --success: 145 60% 42%;
     --success-foreground: 0 0% 100%;
 
@@ -81,6 +94,19 @@ All colors MUST be HSL.
     --accent: 84 36% 56%;
     --accent-foreground: 344 26% 8%;
     --accent-soft: 84 24% 16%;
+
+    --map-blue: 204 78% 58%;
+    --map-blue-soft: 204 46% 18%;
+    --map-blue-ink: 204 78% 72%;
+    --map-amber: 38 92% 58%;
+    --map-amber-soft: 38 48% 18%;
+    --map-amber-ink: 42 92% 74%;
+    --map-rose: 350 76% 62%;
+    --map-rose-soft: 350 42% 18%;
+    --map-rose-ink: 350 82% 76%;
+    --map-purple: 276 64% 68%;
+    --map-purple-soft: 276 38% 19%;
+    --map-purple-ink: 276 74% 80%;
     --success: 145 55% 50%;
     --success-foreground: 30 10% 8%;
     --warning: 38 92% 55%;
