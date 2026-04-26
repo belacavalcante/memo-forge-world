@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import type { CSSProperties } from "react";
 import { Link, useParams } from "react-router-dom";
 import mermaid from "mermaid";
 import { supabase } from "@/integrations/supabase/client";
@@ -16,15 +17,19 @@ type MindBranch = { topic: string; children: string[] };
 
 const nodeHues = ["344 64% 54%", "84 36% 56%", "198 78% 48%", "38 92% 55%", "276 60% 62%", "164 58% 42%"];
 
-const cleanNodeText = (value: string) => value.replace(/^[\s\-•]+/, "").replace(/[(){}[\]"]/g, "").trim();
+const cleanNodeText = (value: string) => value.replace(/^[\s\-•]+/, "").replace(/[(){}\[\]"]/g, "").trim();
 
 const parseMindMap = (raw: string, fallbackTitle: string): { central: string; branches: MindBranch[] } => {
   const rows = raw.split("\n").map((line) => ({ indent: line.search(/\S|$/), text: cleanNodeText(line) })).filter((line) => line.text && !line.text.startsWith("mindmap"));
-  const rootIndex = rows.findIndex((line) => /^root\b/i.test(line.text) || line.indent <= Math.min(...rows.map((row) => row.indent)));
+  if (!rows.length) return parseMindMap(createDopamineCode(fallbackTitle), fallbackTitle);
+  const minIndent = Math.min(...rows.map((row) => row.indent));
+  const rootIndex = rows.findIndex((line) => /^root\b/i.test(line.text) || line.indent <= minIndent);
   const central = cleanNodeText(rows[rootIndex]?.text.replace(/^root\s*/i, "") || fallbackTitle || "Mapa mental");
   const branchRows = rows.slice(rootIndex + 1);
   const firstLevelIndent = Math.min(...branchRows.map((row) => row.indent).filter((indent) => Number.isFinite(indent)));
   const branches: MindBranch[] = [];
+
+  if (!Number.isFinite(firstLevelIndent)) return { central, branches: parseMindMap(createDopamineCode(central), central).branches };
 
   branchRows.forEach((row) => {
     if (row.indent <= firstLevelIndent || branches.length === 0) branches.push({ topic: row.text, children: [] });
@@ -139,7 +144,7 @@ export default function MindMapView() {
                     type="button"
                     onClick={() => setExpanded(isOpen ? null : key)}
                     className="mindy-map-node text-left rounded-lg border p-4 transition-smooth hover:-translate-y-1 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
-                    style={{ "--node-hue": nodeHues[index % nodeHues.length] } as React.CSSProperties}
+                    style={{ "--node-hue": nodeHues[index % nodeHues.length] } as CSSProperties}
                   >
                     <div className="flex items-start justify-between gap-3">
                       <span className="mindy-map-dot mt-1 h-3 w-3 rounded-full shrink-0" />
