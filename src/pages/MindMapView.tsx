@@ -575,9 +575,10 @@ export default function MindMapView() {
                 const isSelected = selectedNodeId === node.id;
                 const isEditing = editingNodeId === node.id;
                 const color = getColor(node.colorKey);
+                const size = getNodeSize(node);
                 const nodeStyle: CSSProperties = {
-                  width: NODE_WIDTH,
-                  height: NODE_HEIGHT,
+                  width: size.width,
+                  height: size.height,
                   left: node.x,
                   top: node.y,
                   cursor: draggingNodeId === node.id ? "grabbing" : canEdit ? "grab" : "default",
@@ -590,7 +591,7 @@ export default function MindMapView() {
                 return (
                   <div
                     key={node.id}
-                    className="group pointer-events-auto absolute flex select-none items-center justify-center rounded-lg border-2 px-4 shadow-soft"
+                    className={`group pointer-events-auto absolute flex select-none items-center justify-center rounded-lg border-2 px-4 shadow-soft ${node.id === "root" ? "ring-4 ring-primary/15" : ""}`}
                     style={{
                       ...nodeStyle,
                       transform: isSelected ? "scale(1.025)" : undefined,
@@ -630,7 +631,7 @@ export default function MindMapView() {
                           onMouseDown={(event) => event.stopPropagation()}
                         />
                       ) : (
-                        <span className="block truncate text-sm font-semibold pointer-events-none">{node.text}</span>
+                        <span className={`pointer-events-none block truncate font-semibold ${node.id === "root" ? "text-base" : "text-sm"}`}>{node.text}</span>
                       )}
                     </div>
                     {canEdit && (
@@ -646,6 +647,7 @@ export default function MindMapView() {
                 );
               })}
             </div>
+          </div>
           </div>
         </section>
 
