@@ -5,6 +5,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import { Slider } from "@/components/ui/slider";
 import {
   ArrowLeft,
   Edit2,
@@ -13,10 +14,14 @@ import {
   Palette,
   Plus,
   Save,
+  RotateCcw,
+  Target,
   Trash2,
   Type,
   ThumbsUp,
   X,
+  ZoomIn,
+  ZoomOut,
 } from "lucide-react";
 import { toast } from "sonner";
 
@@ -46,6 +51,11 @@ type MousePoint = { x: number; y: number };
 
 const NODE_WIDTH = 208;
 const NODE_HEIGHT = 68;
+const ROOT_NODE_WIDTH = 248;
+const ROOT_NODE_HEIGHT = 86;
+const MIN_ZOOM = 0.45;
+const MAX_ZOOM = 1.7;
+const ZOOM_STEP = 0.12;
 
 const COLORS: Array<{ key: NodeColorKey; name: string; hue: string; soft: string; ink: string }> = [
   { key: "default", name: "Osso", hue: "var(--card)", soft: "var(--secondary)", ink: "var(--foreground)" },
@@ -115,6 +125,8 @@ const deserializeMap = (raw: string, title: string): NativeMindMap => {
 const serializeMap = (nodes: MindNode[], edges: MindEdge[]) => JSON.stringify({ version: "mindy-native-v1", nodes, edges }, null, 2);
 
 const getColor = (key: NodeColorKey) => COLORS.find((color) => color.key === key) ?? COLORS[0];
+
+const clampZoom = (value: number) => Math.min(MAX_ZOOM, Math.max(MIN_ZOOM, Number(value.toFixed(2))));
 
 export default function MindMapView() {
   const { id } = useParams();
