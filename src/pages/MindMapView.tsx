@@ -130,6 +130,8 @@ export default function MindMapView() {
   const [editingNodeId, setEditingNodeId] = useState<string | null>(null);
   const [draggingNodeId, setDraggingNodeId] = useState<string | null>(null);
   const [dragOffset, setDragOffset] = useState<MousePoint>({ x: 0, y: 0 });
+  const [isPanning, setIsPanning] = useState(false);
+  const [lastPanPoint, setLastPanPoint] = useState<MousePoint | null>(null);
   const [connectingFromId, setConnectingFromId] = useState<string | null>(null);
   const [mousePos, setMousePos] = useState<MousePoint>({ x: 0, y: 0 });
   const [openTabs, setOpenTabs] = useState<string[]>([]);
@@ -252,6 +254,13 @@ export default function MindMapView() {
   const handleCanvasMouseMove = useCallback(
     (event: ReactMouseEvent<HTMLDivElement>) => {
       const coords = getMouseCoords(event);
+      if (isPanning && lastPanPoint) {
+        const deltaX = coords.x - lastPanPoint.x;
+        const deltaY = coords.y - lastPanPoint.y;
+        setNodes((current) => current.map((node) => ({ ...node, x: node.x + deltaX, y: node.y + deltaY })));
+        setLastPanPoint(coords);
+        return;
+      }
       if (draggingNodeId && canEdit) {
         setNodes((current) =>
           current.map((node) => (node.id === draggingNodeId ? { ...node, x: coords.x - dragOffset.x, y: coords.y - dragOffset.y } : node)),
@@ -259,13 +268,25 @@ export default function MindMapView() {
       }
       if (connectingFromId) setMousePos(coords);
     },
-    [canEdit, connectingFromId, dragOffset.x, dragOffset.y, draggingNodeId],
+    [canEdit, connectingFromId, dragOffset.x, dragOffset.y, draggingNodeId, isPanning, lastPanPoint],
   );
 
   const handleCanvasMouseUp = useCallback(() => {
     setDraggingNodeId(null);
     setConnectingFromId(null);
+    setIsPanning(false);
+    setLastPanPoint(null);
   }, []);
+
+  const handleCanvasMouseDown = (event: ReactMouseEvent<HTMLDivElement>) => {
+    if (event.button !== 2 || event.target !== canvasRef.current) return;
+    event.preventDefault();
+    setIsPanning(true);
+    setLastPanPoint(getMouseCoords(event));
+    setSelectedNodeId(null);
+    setSelectedEdgeId(null);
+    setEditingNodeId(null);
+  };
 
   const handleCanvasClick = (event: ReactMouseEvent<HTMLDivElement>) => {
     if (event.target === canvasRef.current) {
@@ -276,6 +297,13 @@ export default function MindMapView() {
   };
 
   const handleNodeMouseDown = (event: ReactMouseEvent<HTMLDivElement>, nodeId: string) => {
+    if (event.button === 2) {
+      event.preventDefault();
+      event.stopPropagation();
+      setIsPanning(true);
+      setLastPanPoint(getMouseCoords(event));
+      return;
+    }
     if (!canEdit || event.button !== 0 || editingNodeId === nodeId) return;
     event.stopPropagation();
     const coords = getMouseCoords(event);
