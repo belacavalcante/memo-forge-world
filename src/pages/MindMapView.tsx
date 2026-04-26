@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import type { CSSProperties, MouseEvent as ReactMouseEvent } from "react";
+import type { CSSProperties, MouseEvent as ReactMouseEvent, WheelEvent as ReactWheelEvent } from "react";
 import { Link, useParams } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
@@ -322,6 +322,11 @@ export default function MindMapView() {
     }
   };
 
+  const handleCanvasWheel = (event: ReactWheelEvent<HTMLDivElement>) => {
+    event.preventDefault();
+    updateZoom(zoom - Math.sign(event.deltaY) * ZOOM_STEP);
+  };
+
   const handleNodeMouseDown = (event: ReactMouseEvent<HTMLDivElement>, nodeId: string) => {
     if (event.button === 2) {
       event.preventDefault();
@@ -409,6 +414,7 @@ export default function MindMapView() {
             <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Gestos rápidos</p>
             {[
               { icon: MousePointer2, text: "Arraste blocos para reorganizar." },
+              { icon: ZoomIn, text: "Use a roda do mouse para aproximar ou afastar." },
               { icon: MousePointer2, text: "Segure o botão direito para mover o canvas." },
               { icon: GitCommit, text: "Puxe a bolinha lateral para conectar." },
               { icon: Type, text: "Duplo clique para editar o texto." },
