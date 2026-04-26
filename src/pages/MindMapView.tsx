@@ -362,11 +362,18 @@ export default function MindMapView() {
     setMousePos(getMouseCoords(event));
   };
 
+  const getNodeSize = (node: MindNode) => ({
+    width: node.id === "root" ? ROOT_NODE_WIDTH : NODE_WIDTH,
+    height: node.id === "root" ? ROOT_NODE_HEIGHT : NODE_HEIGHT,
+  });
+
   const renderEdge = (sourceNode: MindNode, targetNode: MindNode | MousePoint, isTemp = false) => {
-    const startX = sourceNode.x + NODE_WIDTH;
-    const startY = sourceNode.y + NODE_HEIGHT / 2;
+    const sourceSize = getNodeSize(sourceNode);
+    const targetSize = "id" in targetNode ? getNodeSize(targetNode) : { width: 0, height: 0 };
+    const startX = sourceNode.x + sourceSize.width;
+    const startY = sourceNode.y + sourceSize.height / 2;
     const endX = targetNode.x;
-    const endY = isTemp ? targetNode.y : targetNode.y + NODE_HEIGHT / 2;
+    const endY = isTemp ? targetNode.y : targetNode.y + targetSize.height / 2;
     const controlPointOffset = Math.max(Math.abs(endX - startX) / 2, 58);
     return `M ${startX} ${startY} C ${startX + controlPointOffset} ${startY}, ${endX - controlPointOffset} ${endY}, ${endX} ${endY}`;
   };
