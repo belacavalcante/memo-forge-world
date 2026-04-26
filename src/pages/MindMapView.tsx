@@ -22,7 +22,7 @@ export default function MindMapView() {
 
   const nodes = useMemo(() => {
     const matches = [...code.matchAll(/^\s*([A-Za-z0-9_]+)\s*(?:\[|\(|\{)([^\]\)\}]+)(?:\]|\)|\})/gm)];
-    return matches.map((match) => ({ id: match[1], label: match[2].replaceAll('"', "").trim() })).slice(0, 12);
+    return matches.map((match) => ({ id: match[1], label: match[2].replace(/"/g, "").trim() })).slice(0, 12);
   }, [code]);
 
   useEffect(() => {
