@@ -468,6 +468,20 @@ export default function MindMapView() {
             </div>
           )}
 
+          <div className="absolute bottom-5 left-1/2 z-30 flex w-[min(92%,30rem)] -translate-x-1/2 items-center gap-3 rounded-full border bg-card/95 px-4 py-2 shadow-glow backdrop-blur-md">
+            <button onClick={() => updateZoom(zoom - ZOOM_STEP)} className="rounded-full p-1.5 text-muted-foreground transition-smooth hover:bg-secondary hover:text-foreground" title="Diminuir zoom">
+              <ZoomOut className="h-4 w-4" />
+            </button>
+            <Slider value={[zoom]} min={MIN_ZOOM} max={MAX_ZOOM} step={0.05} onValueChange={([value]) => updateZoom(value)} className="flex-1" />
+            <button onClick={() => updateZoom(zoom + ZOOM_STEP)} className="rounded-full p-1.5 text-muted-foreground transition-smooth hover:bg-secondary hover:text-foreground" title="Aumentar zoom">
+              <ZoomIn className="h-4 w-4" />
+            </button>
+            <button onClick={() => updateZoom(1)} className="rounded-full p-1.5 text-muted-foreground transition-smooth hover:bg-secondary hover:text-foreground" title="Resetar zoom">
+              <RotateCcw className="h-4 w-4" />
+            </button>
+            <span className="min-w-12 text-right text-xs font-semibold text-muted-foreground">{Math.round(zoom * 100)}%</span>
+          </div>
+
           <div
             ref={canvasRef}
             className={`relative min-h-0 flex-1 overflow-hidden touch-none ${isPanning ? "cursor-grabbing" : "cursor-grab"}`}
@@ -481,8 +495,29 @@ export default function MindMapView() {
             onMouseUp={handleCanvasMouseUp}
             onMouseLeave={handleCanvasMouseUp}
             onClick={handleCanvasClick}
+            onWheel={handleCanvasWheel}
             onContextMenu={(event) => event.preventDefault()}
           >
+            <div className="absolute left-5 top-5 z-20 max-w-sm rounded-lg border bg-card/92 p-4 shadow-soft backdrop-blur-md">
+              <div className="flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+                <Target className="h-4 w-4 text-primary" /> Conceito principal
+              </div>
+              <h2 className="mt-2 text-xl font-semibold leading-tight">{rootNode?.text ?? map.title}</h2>
+              {rootConcepts.length > 0 && (
+                <div className="mt-3 flex flex-wrap gap-2">
+                  {rootConcepts.map((concept) => (
+                    <span key={concept} className="rounded-full bg-primary-soft px-2.5 py-1 text-xs font-medium text-primary">
+                      {concept}
+                    </span>
+                  ))}
+                </div>
+              )}
+            </div>
+
+            <div
+              className="absolute left-0 top-0 h-[2200px] w-[3200px] origin-top-left"
+              style={{ transform: `scale(${zoom})`, zIndex: 1 }}
+            >
             <svg className="pointer-events-none absolute inset-0 h-full w-full" style={{ zIndex: 0 }}>
               <defs>
                 <marker id="mindy-arrow" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
